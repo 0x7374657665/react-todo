@@ -5,7 +5,6 @@ export default class Todo extends React.Component {
     const { todo, checkHandler } = this.props;
     return (
       <li
-        key={todo.id}
         style={
           todo.done
             ? {

@@ -1,6 +1,7 @@
 import React from "react";
 import Todo from "./components/Todo";
 import TodoModel from "./models/TodoModel";
+import { getArrayWithItemReplaced } from "./util/stateUtils";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,13 +18,12 @@ export default class App extends React.Component {
   toggleDone = todo => {
     const todoIndex = this.state.todos.indexOf(todo);
     const updatedTodo = todo.getToggledTodo();
-    this.setState({
-      todos: [
-        ...this.state.todos.slice(0, todoIndex),
-        updatedTodo,
-        ...this.state.todos.slice(todoIndex + 1)
-      ]
-    });
+    const todos = getArrayWithItemReplaced(
+      this.state.todos,
+      updatedTodo,
+      todoIndex
+    );
+    this.setState({ todos });
   };
 
   render() {
