@@ -6,33 +6,23 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [
-        { id: 0, text: "this", done: false },
-        { id: 1, text: "that", done: false },
-        { id: 2, text: "the other thing", done: true }
+        new TodoModel("this"),
+        new TodoModel("that"),
+        new TodoModel("the other thing")
       ]
     };
   }
 
-  toggleDone = event => {
-    //make a defensive (shallow) copy of this.state.todos
-    const todos = [...this.state.todos];
-
-    //find out where in the todos array the target is
-    const targetId = event.target.parentElement.getAttribute("data-key");
-    const todoIndex = todos.findIndex(t => t.id == targetId); // 3 == '3'
-
-    //create a new todo object with the new state values
-    const todo = { ...todos[todoIndex] };
-    todo.done = !todo.done;
-
-    //update our copy of the todos array with the updated todo
-    todos[todoIndex] = todo;
-
-    console.log(todos);
-
-    //call setState to update the component state and notify
-    //effected components to rerender
-    this.setState({ todos });
+  toggleDone = todo => {
+    const todoIndex = this.state.todos.indexOf(todo);
+    const updatedTodo = todo.getToggledTodo();
+    this.setState({
+      todos: [
+        ...this.state.todos.slice(0, todoIndex),
+        updatedTodo,
+        ...this.state.todos.slice(todoIndex + 1)
+      ]
+    });
   };
 
   render() {
@@ -41,28 +31,52 @@ class App extends React.Component {
         <h1>TODO:</h1>
         <ul style={{ listStyle: "none" }}>
           {this.state.todos.map(todo => (
-            <li
-              key={todo.id}
-              data-key={todo.id}
-              style={
-                todo.done
-                  ? {
-                      textDecoration: "line-through",
-                      color: "lightGray"
-                    }
-                  : { textDecoration: "none" }
-              }
-            >
-              <input
-                type="checkbox"
-                checked={todo.done}
-                onChange={this.toggleDone}
-              />
-              {todo.text}
-            </li>
+            <Todo todo={todo} checkHandler={this.toggleDone} key={todo.id} />
           ))}
         </ul>
       </div>
+    );
+  }
+}
+
+let _todoId = 0;
+const generateTodoId = () => ++_todoId;
+class TodoModel {
+  constructor(text = "") {
+    this.text = text;
+    this.done = false;
+    this.id = generateTodoId();
+  }
+
+  getToggledTodo() {
+    const newTodo = new TodoModel(this.text);
+    newTodo.done = !this.done;
+    return newTodo;
+  }
+}
+
+class Todo extends React.Component {
+  render() {
+    const { todo, checkHandler } = this.props;
+    return (
+      <li
+        key={todo.id}
+        style={
+          todo.done
+            ? {
+                textDecoration: "line-through",
+                color: "lightGray"
+              }
+            : { textDecoration: "none" }
+        }
+      >
+        <input
+          type="checkbox"
+          checked={todo.done}
+          onChange={() => checkHandler(todo)}
+        />
+        {todo.text}
+      </li>
     );
   }
 }
