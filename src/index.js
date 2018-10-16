@@ -1,14 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const initialState = {
-  todos: ["this", "that", "the other thing"]
-};
-
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialState };
+    this.state = {
+      todos: ["this", "that", "the other thing"]
+    };
   }
 
   render() {
