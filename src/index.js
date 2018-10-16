@@ -41,7 +41,18 @@ class App extends React.Component {
         <h1>TODO:</h1>
         <ul style={{ listStyle: "none" }}>
           {this.state.todos.map(todo => (
-            <li key={todo.id} data-key={todo.id}>
+            <li
+              key={todo.id}
+              data-key={todo.id}
+              style={
+                todo.done
+                  ? {
+                      textDecoration: "line-through",
+                      color: "lightGray"
+                    }
+                  : { textDecoration: "none" }
+              }
+            >
               <input
                 type="checkbox"
                 checked={todo.done}
