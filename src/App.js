@@ -1,5 +1,5 @@
 import React from "react";
-import Todo from "./components/Todo";
+import Todo from "./components/Todo/Todo";
 import { getArrayWithItemReplaced } from "./util/stateUtils";
 import TodoInput from "./components/TodoInput";
 
@@ -15,20 +15,22 @@ export default class App extends React.Component {
     };
   }
 
-  toggleDone = todo => {
-    const todoIndex = this.state.todos.findIndex(t => t.id === todo.id);
-    const updatedTodo = { ...todo, done: !todo.done };
+  createTodo = newTodoText => {
+    const newTodo = { id: "" + +new Date(), text: newTodoText, done: false };
+    this.setState({ todos: [...this.state.todos, newTodo] });
+  };
+
+  updateTodo = updatedTodo => {
+    console.log(updatedTodo);
+    const todoIndex = this.state.todos.findIndex(t => t.id === updatedTodo.id);
+    console.log(`found updated todo at: ${todoIndex}`);
     const updatedTodos = getArrayWithItemReplaced(
       this.state.todos,
       updatedTodo,
       todoIndex
     );
+    console.log(updatedTodos);
     this.setState({ todos: updatedTodos });
-  };
-
-  createTodo = newTodoText => {
-    const newTodo = { id: "" + +new Date(), text: newTodoText, done: false };
-    this.setState({ todos: [...this.state.todos, newTodo] });
   };
 
   render() {
@@ -38,7 +40,7 @@ export default class App extends React.Component {
         <ul style={{ listStyle: "none" }}>
           {this.state.todos.map(todo => (
             <li key={todo.id}>
-              <Todo todo={todo} checkHandler={this.toggleDone} />
+              <Todo todo={todo} update={this.updateTodo} />
             </li>
           ))}
           <li style={{ marginTop: "0.5em" }}>
