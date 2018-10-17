@@ -16,7 +16,7 @@ export default class Todo extends React.Component {
             todo.done
               ? {
                   textDecoration: "line-through",
-                  color: "lightGray"
+                  color: "lightgray"
                 }
               : { textDecoration: "none" }
           }
@@ -25,6 +25,7 @@ export default class Todo extends React.Component {
         </span>
         <TodoControls
           edit={() => console.log(`editing '${this.props.todo.text}'`)}
+          editEnabled={!todo.done}
         />
       </div>
     );
