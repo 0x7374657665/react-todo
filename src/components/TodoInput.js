@@ -12,9 +12,15 @@ export default class TodoInput extends React.Component {
 		this.setState({ todoText: event.target.value });
 	};
 
+	onFormSubmit = event => {
+		event.preventDefault();
+		this.props.onInput(this.state.todoText);
+		this.setState({ todoText: "" });
+	};
+
 	render() {
 		return (
-			<form onSubmit={this.props.submitHandler}>
+			<form onSubmit={this.onFormSubmit}>
 				<input
 					type="text"
 					value={this.state.todoText}

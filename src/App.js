@@ -27,6 +27,11 @@ export default class App extends React.Component {
 		this.setState({ todos });
 	};
 
+	createTodo = newTodoText => {
+		const newTodo = new TodoModel(newTodoText);
+		this.setState({ todos: [...this.state.todos, newTodo] });
+	};
+
 	render() {
 		return (
 			<div>
@@ -37,8 +42,8 @@ export default class App extends React.Component {
 							<Todo todo={todo} checkHandler={this.toggleDone} />
 						</li>
 					))}
-					<li>
-						<TodoInput submitHandler={console.log} />
+					<li style={{ marginTop: "0.5em" }}>
+						<TodoInput onInput={this.createTodo} />
 					</li>
 				</ul>
 			</div>
