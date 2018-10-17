@@ -8,11 +8,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [
-        { id: "1", text: "this", done: false },
-        { id: "2", text: "that", done: false },
-        { id: "3", text: "the other thing", done: true }
-      ]
+      todos: []
     };
   }
 
@@ -46,7 +42,7 @@ export default class App extends React.Component {
       <div>
         <h1 style={{ paddingBottom: 0, marginBottom: 0 }}>TODO:</h1>
         <CompleteRatio todos={this.state.todos} />
-        <ul style={{ listStyle: "none" }}>
+        <ul style={{ listStyle: "none", paddingLeft: 0 }}>
           {this.state.todos.map(todo => (
             <li key={todo.id}>
               <Todo
