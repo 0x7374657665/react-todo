@@ -21,15 +21,22 @@ export default class App extends React.Component {
   };
 
   updateTodo = updatedTodo => {
-    console.log(updatedTodo);
     const todoIndex = this.state.todos.findIndex(t => t.id === updatedTodo.id);
-    console.log(`found updated todo at: ${todoIndex}`);
     const updatedTodos = getArrayWithItemReplaced(
       this.state.todos,
       updatedTodo,
       todoIndex
     );
-    console.log(updatedTodos);
+    this.setState({ todos: updatedTodos });
+  };
+
+  deleteTodo = targetTodo => {
+    const { todos } = this.state;
+    const todoIndex = todos.findIndex(t => t.id === targetTodo.id);
+    const updatedTodos = [
+      ...todos.slice(0, todoIndex),
+      ...todos.slice(todoIndex + 1)
+    ];
     this.setState({ todos: updatedTodos });
   };
 
@@ -40,7 +47,11 @@ export default class App extends React.Component {
         <ul style={{ listStyle: "none" }}>
           {this.state.todos.map(todo => (
             <li key={todo.id}>
-              <Todo todo={todo} update={this.updateTodo} />
+              <Todo
+                todo={todo}
+                update={this.updateTodo}
+                remove={this.deleteTodo}
+              />
             </li>
           ))}
           <li style={{ marginTop: "0.5em" }}>

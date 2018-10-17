@@ -24,6 +24,10 @@ export default class Todo extends React.Component {
     this.props.update(updatedTodo);
   };
 
+  handleRemove = () => {
+    this.props.remove(this.props.todo);
+  };
+
   render() {
     const { todo } = this.props;
     return (
@@ -40,7 +44,11 @@ export default class Todo extends React.Component {
             <DisplayTodo done={todo.done} text={todo.text} />
           </div>
         )}
-        <TodoControls edit={this.toggleEditMode} editEnabled={!todo.done} />
+        <TodoControls
+          edit={this.toggleEditMode}
+          editEnabled={!todo.done}
+          remove={this.handleRemove}
+        />
       </div>
     );
   }
