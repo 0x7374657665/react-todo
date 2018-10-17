@@ -1,52 +1,51 @@
 import React from "react";
 import Todo from "./components/Todo";
-import TodoModel from "./models/TodoModel";
 import { getArrayWithItemReplaced } from "./util/stateUtils";
 import TodoInput from "./components/TodoInput";
 
 export default class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			todos: [
-				new TodoModel("this"),
-				new TodoModel("that"),
-				new TodoModel("the other thing")
-			]
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: [
+        { id: "1", text: "this", done: false },
+        { id: "2", text: "that", done: false },
+        { id: "3", text: "the other thing", done: true }
+      ]
+    };
+  }
 
-	toggleDone = todo => {
-		const todoIndex = this.state.todos.indexOf(todo);
-		const updatedTodo = todo.getToggledTodo();
-		const todos = getArrayWithItemReplaced(
-			this.state.todos,
-			updatedTodo,
-			todoIndex
-		);
-		this.setState({ todos });
-	};
+  toggleDone = todo => {
+    const todoIndex = this.state.todos.findIndex(t => t.id === todo.id);
+    const updatedTodo = { ...todo, done: !todo.done };
+    const updatedTodos = getArrayWithItemReplaced(
+      this.state.todos,
+      updatedTodo,
+      todoIndex
+    );
+    this.setState({ todos: updatedTodos });
+  };
 
-	createTodo = newTodoText => {
-		const newTodo = new TodoModel(newTodoText);
-		this.setState({ todos: [...this.state.todos, newTodo] });
-	};
+  createTodo = newTodoText => {
+    const newTodo = { id: "" + +new Date(), text: newTodoText, done: false };
+    this.setState({ todos: [...this.state.todos, newTodo] });
+  };
 
-	render() {
-		return (
-			<div>
-				<h1>TODO:</h1>
-				<ul style={{ listStyle: "none" }}>
-					{this.state.todos.map(todo => (
-						<li key={todo.id}>
-							<Todo todo={todo} checkHandler={this.toggleDone} />
-						</li>
-					))}
-					<li style={{ marginTop: "0.5em" }}>
-						<TodoInput onInput={this.createTodo} />
-					</li>
-				</ul>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <h1>TODO:</h1>
+        <ul style={{ listStyle: "none" }}>
+          {this.state.todos.map(todo => (
+            <li key={todo.id}>
+              <Todo todo={todo} checkHandler={this.toggleDone} />
+            </li>
+          ))}
+          <li style={{ marginTop: "0.5em" }}>
+            <TodoInput onInput={this.createTodo} />
+          </li>
+        </ul>
+      </div>
+    );
+  }
 }
