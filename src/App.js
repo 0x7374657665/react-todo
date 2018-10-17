@@ -2,6 +2,7 @@ import React from "react";
 import Todo from "./components/Todo/Todo";
 import { getArrayWithItemReplaced } from "./util/stateUtils";
 import TodoInput from "./components/TodoInput";
+import CompleteRatio from "./components/CompleteRatio";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,7 +44,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>TODO:</h1>
+        <h1 style={{ paddingBottom: 0, marginBottom: 0 }}>TODO:</h1>
+        <CompleteRatio todos={this.state.todos} />
         <ul style={{ listStyle: "none" }}>
           {this.state.todos.map(todo => (
             <li key={todo.id}>
